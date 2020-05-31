@@ -1,56 +1,53 @@
+简单且原始
 
-
-### macOS
-
-#### install MongoDB
-
- with homebrew
-
-1. `brew update`
-
-2. `brew install mongodb`
-
-3. create the directory in the default location by running `mkdir -p /data/db`
-
-4. make sure that the  `/data/db` directory has the right permission，
+1. 安装
 
    ```shell
-   sudo chown -R `id -un` /data/db
+   npm init -y
+   npm i -S koa koa-bodyparser koa-json koa-logger koa-router
+   npm i -g typescript
+   npm i -D @types/node
    ```
 
-run MongoDB
+2. ⭐️ 创建目录分为 src 和 dist
 
-1. *Run the Mongo daemon*: run `sudo mongod` to start Mongo server. Exit it run hit 'ctrl+c'
-2. *Run the Mongo shell*: run `mongo` . Exit it run `quite()`
+3. ⭐️ 创建文件 [tsconfig.json](https://github.com/masnun/koamed/blob/c0cd9552dc/tsconfig.json) 
 
-### windows
+4. ⭐️ 创建文件 [src/index.ts](https://github.com/masnun/koamed/blob/c0cd9552dc/src/index.ts) 
 
-#### error handling
+5. ⭐️ 创建文件 [/index.js](https://github.com/masnun/koamed/blob/c0cd9552dc/index.js) 
 
-error：`NODE_PATH不是内部或外部命令的错误`
+6. ⭐️ 执行 `tsc`. That should create a index.js file in the `dist` directory. 
 
-soultion：
+7. ⭐️ 执行 `node .` 虽然服务成功跑起来了，但是 `src/index.ts` 标有错误.
 
-1.  `npm install cross-env -g`
+进化
 
-2. `"start": "cross-env NODE_PATH=src node index.js"` instead of `"start": "NODE_PATH=src node index.js"` 
+1. changing a TS file also restarts the node app.
 
-#### install mongoDB
+   1. 上面的 9 改为 `tsc -w`，这样就能在文件变化的时候监听。
+   2. `npm i -g nodemon` ，安装完后 `nodemon .` 监听文件变化并重启应用。
 
-1. download url：https://www.mongodb.com/download-center/community
-2. create the data folders to store our databases
-   1. create `data` folder in C Drive
-   2. create `db` folder in `data`folder
-   3. run git bash
-   4. run `cd ~`
-   5. run `touch .bash_profile`
-   6. run vim `bash_profile`
-   7. look C → Program Files → MongoDB → Server, just look if it exists
-   8. paste in the following code into vim, then `:wq!`
-   9. close current git bash applicatio
-   10. re-launch git bash and type `mongo --version`, you can see the MongoDB version info.
+2. Adding Type Definitions
 
-### utilities
+   ```shell
+   npm i -D @types/koa @types/koa-router @types/koa-json @types/koa-logger @types/koa-bodyparser 
+   ```
 
-auto reload: [nodemon](https://nodemon.io)
+3. Parsing Request Body
+
+4. Adding Types for Request Body
+
+   ```ts
+   interface HelloRequest {
+     name: string;
+   }
+   
+   // Hello world
+   router.post("/", async (ctx, next) => {
+     const { name } = <HelloRequest>ctx.request.body;
+     ctx.body = { name };
+     await next();
+   });
+   ```
 
